@@ -4,7 +4,7 @@ import {View, Text, FlatList, StyleSheet } from 'react-native';
 function HomeScreen({navigation}) {
     return (
         <View style={{flex: 1}}>
-            <Text style={styles.logoLetters}>Community</Text>
+            <Text style={styles.logoLetters}>community</Text>
             <Text style={{alignItems: 'center'}}>Home Page</Text>
             <FlatList 
                 />
@@ -15,9 +15,11 @@ function HomeScreen({navigation}) {
 
 const styles = StyleSheet.create({
     logoLetters : {
-        color: 'blue',
+        color: 'white',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 40,
+        backgroundColor: '#1ba8e0',
+        
     }
 })
 

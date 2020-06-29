@@ -1,33 +1,10 @@
 import React from 'react';
 import { Text, TextInput, View, Button } from 'react-native';
+import MyStack from './pageNavigation';
 
-var user = {
-    email: '',
-    password: '',
-    userId: ''
-};
-
-
-var text = "";
-var loginFlag = false;
-
-
-function setEmail(text) {
-    user.email = text;
-};
-
-
-function setPassword(text) {
-    user.password = text;
-};
-
-
-function saveUser(users) {
-    console.log(users.email);
-    console.log(users.password);
-    //create post request
+function login(users){
     fetch('https://intense-meadow-20924.herokuapp.com/account', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -37,8 +14,7 @@ function saveUser(users) {
     console.log(users.userId);
 };
 
-
-function SignUp({navigation}) {
+function SignIn({navigation}) {
     return (
         <View>
             <Text>Sign Up</Text>
@@ -55,24 +31,16 @@ function SignUp({navigation}) {
                 maxLength={20}
                 onChangeText={text => setPassword(text)}
                 defaultValue={text}/>
-            <TextInput 
-                style={{height: 40}}
-                placeholder="Confirm Password"
-                secureTextEntry={true}
-                maxLength={20}
-                onChangeText={text => setPassword(text)}
-                defaultValue={text}/>
             <Button
                 title="Submit"
-                onPress={() => saveUser(user)}
+                onPress={() => login(user)}
             />
             <Button
-                title="Log In"
-                onPress={() => navigation.navigate('SignIn')}
+                title="Sign Up"
+                onPress={() => navigation.navigate('SignUp')}
             />
         </View>
     );
 }
 
-
-export default SignUp;
+export default SignIn;
