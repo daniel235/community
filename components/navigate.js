@@ -12,11 +12,11 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs() {
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeScreen}/>
-            <Tab.Screen name="Profile" component={Profile}/>
-            <Tab.Screen name="signup" component={SignUp}/>
-        </Tab.Navigator>
+            <Tab.Navigator>
+                <Tab.Screen name="Home" component={HomeScreen}/>
+                <Tab.Screen name="Profile" component={Profile}/>
+                <Tab.Screen name="signup" component={SignUp}/>
+            </Tab.Navigator>
     );
 }
 

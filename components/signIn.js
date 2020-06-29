@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, TextInput, View, Button } from 'react-native';
-import MyStack from './pageNavigation';
 
 function login(users){
     fetch('https://intense-meadow-20924.herokuapp.com/account', {

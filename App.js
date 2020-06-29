@@ -8,8 +8,13 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyTabs from './components/navigate';
-import MyStack from './components/pageNavigation';
+import HomeScreen from './components/home';
+import Profile from './components/profile';
+import SignUp from './components/signup';
+import SignIn from './components/signIn';
 
 import {
   SafeAreaView,
@@ -28,11 +33,16 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+const Stack = createStackNavigator();
+
+
 const App: () => React$Node = () => {
   return (
     <NavigationContainer>
-      <MyTabs/>
-      <MyStack/>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Profile" component={Profile} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
