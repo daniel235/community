@@ -1,6 +1,27 @@
 import React from 'react';
 import { Text, TextInput, View, Button } from 'react-native';
 
+
+var user = {
+    email: '',
+    password: '',
+    userId: ''
+};
+
+
+var text = "";
+
+
+function setEmail(text) {
+    user.email = text;
+};
+
+
+function setPassword(text) {
+    user.password = text;
+};
+
+
 function login(users){
     fetch('https://intense-meadow-20924.herokuapp.com/account', {
         method: 'GET',
@@ -12,6 +33,7 @@ function login(users){
     }).then((response) => {users.userId = response._id}).catch((error) => console.error(error));
     console.log(users.userId);
 };
+
 
 function SignIn({navigation}) {
     return (

@@ -8,16 +8,15 @@ import SignUp from './signup';
 import SignIn from './signIn';
 
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-function MyTabs() {
+function MyStack() {
     return (
-            <Tab.Navigator>
-                <Tab.Screen name="Home" component={HomeScreen}/>
-                <Tab.Screen name="Profile" component={Profile}/>
-                <Tab.Screen name="signup" component={SignUp}/>
-            </Tab.Navigator>
+        <Stack.Navigator>
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="SignIn" component={SignIn} />
+        </Stack.Navigator>
     );
 }
 
-export default MyTabs;
+export default MyStack;

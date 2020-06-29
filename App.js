@@ -10,11 +10,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyTabs from './components/navigate';
+import MyStack from './components/navigate';
 import HomeScreen from './components/home';
 import Profile from './components/profile';
-import SignUp from './components/signup';
-import SignIn from './components/signIn';
 
 import {
   SafeAreaView,
@@ -33,24 +31,24 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Stack = createStackNavigator();
+
+const Tab = createBottomTabNavigator();
 
 
 const App: () => React$Node = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Profile" component={Profile} />
-      </Stack.Navigator>
+      <Tab.Navigator>
+          <Tab.Screen name="Home" component={HomeScreen}/>
+          <Tab.Screen name="Profile" component={Profile}/>
+          <Tab.Screen name="signup" component={MyStack}/>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  }
+  
 });
 
 export default App;
