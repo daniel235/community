@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextInput, View, Button } from 'react-native';
+import { Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
 
 var user = {
     email: '',
@@ -66,10 +66,12 @@ function SignUp({navigation}) {
                 title="Submit"
                 onPress={() => saveUser(user)}
             />
-            <Button
-                title="Log In"
+            <TouchableOpacity
+                style={{alignItems: 'center'}}
                 onPress={() => navigation.navigate('SignIn')}
-            />
+            >
+                <Text style={{color: '#1ba8e0'}}>Sign In</Text>
+            </TouchableOpacity>
         </View>
     );
 }

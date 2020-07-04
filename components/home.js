@@ -1,13 +1,12 @@
 import * as React from 'react';
 import {View, Text, FlatList, StyleSheet } from 'react-native';
+import NewsFeed from './newsfeed';
 
 function HomeScreen({navigation}) {
     return (
         <View style={{flex: 1}}>
             <Text style={styles.logoLetters}>community</Text>
-            <Text style={{alignItems: 'center'}}>Home Page</Text>
-            <FlatList 
-                />
+            <NewsFeed nav={navigation}/>
             
         </View>
     );

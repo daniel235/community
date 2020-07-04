@@ -13,8 +13,8 @@ const Stack = createStackNavigator();
 function MyStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
     );
 }
