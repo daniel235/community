@@ -26,17 +26,26 @@ function goToProfile(user, nav) {
 }
 
 
-function login(users, nav){
+async function login(users, nav){
     var data;
-    fetch('https://intense-meadow-20924.herokuapp.com/accountLogin', {
+
+    let response = await fetch('https://intense-meadow-20924.herokuapp.com/accountLogin', {
         method: 'POST',
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         body: JSON.stringify(users)
-    }).then((response) => response.json().then(data => users.userId = data._id)).catch((error) => console.error(error));
+    });
 
+    if(!response.ok){
+        throw new Error("HTTP Error $(response.status)");
+    }
+    else{
+        //users.userId = await (response.json().then(data))._id;
+        response.json().then(data => users.userId = data._id);
+        //.then((response) => response.json().then(data => users.userId = data._id)).catch((error) => console.error(error));
+    }
     console.log(users);
     goToProfile(users, nav);
 };

@@ -1,17 +1,25 @@
 import * as React from 'react';
 import {View, Text, TextInput, Button} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+import SignUp from './signup';
+import SignIn from './signIn';
 
 
 var text = "";
 var status = "";
+var userId = "";
+
+const Stack = createStackNavigator();
+
 
 export default class NewsFeed extends React.Component {
     constructor(props){
         super(props);
-        this.navigation = props.nav;
         this.state = {
             count : 0,
+            userId : props.userId,
+            SignedIn : false,
         }
     }
 
@@ -45,7 +53,6 @@ export default class NewsFeed extends React.Component {
     }
 
     createPost(post){
-
         //post to newsfeed and send back entire newsfeed 
         fetch('https://intense-meadow-20924.herokuapp.com/newsFeed', {
             method: 'POST', 
@@ -64,7 +71,7 @@ export default class NewsFeed extends React.Component {
                 this.post.name = key.name;
                 this.post.body = key.body;
                 this.post.date = Date.now();
-                this.newsfeed.push(this.post)
+                this.newsfeed.push(this.post);
             }
         }
     }
@@ -85,17 +92,31 @@ export default class NewsFeed extends React.Component {
         return(
             <View>
                 <Text>My NewsFeed</Text>
-
             </View>
         );
     }
 
+    signedIn(){
+        if(this.SignedIn){
+            return(
+                <View>
+                    <this.StatusBar/>
+                    <this.getNewsFeed id={this.state.userId}/>
+                </View>
+            );
+        }
+        else{
+            return(
+                <View>
+                    <Text>Sign in</Text>
+                </View>
+            );
+        }
+    }
+
     render() {
         return(
-            <View>
-                <this.StatusBar/>
-                <this.getNewsFeed id={userId}/>
-            </View>
+            <this.signedIn/>
         );
     }
 
