@@ -16,33 +16,39 @@ function getProfileData(id) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(idOb)
-    }).then((response) => profileData = response);
-
+    }).then((response) => profileData = response.json());
     //check if response is empty
-    if(profileData === {}) {
-        //navigate to update profile
-        return {}
-    }
-
+    return profileData;
 
 }
 
-
+//navigate to profile with a user id to show that your logged in
 function Profile({route, navigation}) {
     var me = new Profiles();
+    console.log("at profile again");
     //const { userId } = route.params;
     //id = userId;
-    var profileData = {}
-    if(route != null) {
-        console.log(route);
+    var profileData = null;
+    if(route.params != null) {
         profileData = getProfileData(route.params.userId);
-        if (profileData === {}) {
-            navigation.navigate('update', {id : route.params.userId})
+        console.log("profile data");
+        console.log(profileData);
+        if (JSON.stringify(profileData) === '{}') {
+            console.log("navigating to update");
+            navigation.navigate('update', {id : route.params.userId});
+        }
+        //populate profile data
+        else{
+            console.log("does have profile data");
+            console.log(profileData);
+            me.state.name = profileData.Name;
+            me.state.sex = profileData.Sex;
+            me.state.userId = route.paramse.userId;
         }
         return (
             <View style={{flex: 1}}>
                 <Text style={{alignItems: 'center'}}>Profile Screen</Text>
-                <Text>Hello {route.params.userId}</Text>
+                <Text>Hello {me.state.name}</Text>
             </View>
         );
         /*

@@ -16,16 +16,17 @@ const Stack = createStackNavigator();
 export default class NewsFeed extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
+        state = {
             count : 0,
             userId : props.userId,
-            SignedIn : false,
-        }
-    }
+            SignedInApp : false,
+            status : "",
+        };
+    };
 
     createStatus(text) {
-        this.status = text;
-    }
+        this.setState({status : text});
+    } 
 
     StatusBar({navigation}){
         return(
@@ -34,7 +35,7 @@ export default class NewsFeed extends React.Component {
                 <TextInput
                     style={{height: 40}}
                     placeholder="What's Up?"
-                    onChangeText={text => this.createStatus(text)}
+                    onChangeText={text => this.setState().bind(this, {status : text})}
                     defaultValue={text}/>
                 <Button
                     title="Post"
@@ -96,8 +97,12 @@ export default class NewsFeed extends React.Component {
         );
     }
 
+    authenticate = () => {
+        this.setState({SignedInApp : true});
+    }
+    /*
     signedIn(){
-        if(this.SignedIn){
+        if(this.state.SignedInApp){
             return(
                 <View>
                     <this.StatusBar/>
@@ -112,12 +117,18 @@ export default class NewsFeed extends React.Component {
                 </View>
             );
         }
-    }
+    }*/
 
     render() {
+        /*
+        if(this.state.userId != null){
+            this.setState({SignedInApp : True});
+        }*/
         return(
-            <this.signedIn/>
+            <View>
+                <this.StatusBar/>
+                <this.getNewsFeed id={this.props.userId}/>
+            </View>
         );
     }
-
 }

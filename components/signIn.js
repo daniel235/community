@@ -9,6 +9,7 @@ var user = {
 };
 
 var text = "";
+var passwordText = "";
 
 function setEmail(text) {
     user.email = text;
@@ -19,10 +20,20 @@ function setPassword(text) {
     user.password = text;
 };
 
+function goToHome(user, nav){
+    nav.navigate('Home', {userId : user.userId});
+}
+
 function goToProfile(user, nav) {
     console.log("user id");
     console.log(user.userId);
     nav.navigate('Profile', {userId: user.userId});
+}
+
+
+function loginLogic(user, nav) {
+    var userId = login(user, nav);
+    return userId;
 }
 
 
@@ -37,18 +48,24 @@ async function login(users, nav){
         },
         body: JSON.stringify(users)
     });
-
+    
     if(!response.ok){
-        throw new Error("HTTP Error $(response.status)");
+        console.log("bad response");
     }
+
     else{
         //users.userId = await (response.json().then(data))._id;
-        response.json().then(data => users.userId = data._id);
+        //response.json().then(data => users.userId = data._id).catch((error) => console.error(error));
+        response = await response.json();
+        users.userId = await response._id;
         //.then((response) => response.json().then(data => users.userId = data._id)).catch((error) => console.error(error));
     }
+    console.log(users.userId);
     console.log(users);
-    goToProfile(users, nav);
+    //goToProfile(users, nav);
+    goToHome(users, nav);
 };
+
 
 
 function SignIn({navigation}) {
@@ -66,8 +83,8 @@ function SignIn({navigation}) {
                 placeholder="Password"
                 secureTextEntry={true}
                 maxLength={20}
-                onChangeText={text => setPassword(text)}
-                defaultValue={text}/>
+                onChangeText={passwordText => setPassword(passwordText)}
+                defaultValue={passwordText}/>
             <Button
                 title="Submit"
                 onPress={() => login(user, navigation)}
