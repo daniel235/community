@@ -35,7 +35,7 @@ export default class NewsFeed extends React.Component {
                 <TextInput
                     style={{height: 40}}
                     placeholder="What's Up?"
-                    onChangeText={text => this.setState().bind(this, {status : text})}
+                    onChangeText={text => console.log(text)}
                     defaultValue={text}/>
                 <Button
                     title="Post"
