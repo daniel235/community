@@ -17,8 +17,9 @@ export default class HomeScreen extends React.Component {
                 password : "",
             }
         }
-    }
+        this.onPressNavigate = this.onPressNavigate.bind(this);
 
+    }
 
     setEmail(textsam) {
         this.state.user.email = textsam;
@@ -63,6 +64,11 @@ export default class HomeScreen extends React.Component {
         }
     };
 
+    onPressNavigate(){
+        const { navigate } = this.props.navigation;
+        navigate.navigate('SignUp');
+    }
+
 
     render() {
         if(this.state.signedIn){
@@ -104,7 +110,7 @@ export default class HomeScreen extends React.Component {
                     
                     <TouchableOpacity
                         style={{alignItems: 'center'}}
-                        onPress={() => navigation.navigate('SignUp')}
+                        onPress={() => this.onPressNavigate()}
                     >
                         <Text style={{color: '#1ba8e0'}}>Sign Up</Text>
                     </TouchableOpacity>

@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React from 'react';
-import { AsyncStorage } from 'react-native';
+import React, { useEffect } from 'react';
+import { AsyncStorage, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -33,6 +33,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import SignIn from './components/signIn';
+import { SignedOut, SignedIn } from './components/router';
 
 
 const Tab = createBottomTabNavigator();
@@ -49,29 +50,28 @@ retrieveToken = async () => {
   return value;
 }
 
-const App: () => React$Node = () => {
+const App = () => {
   //check for auth token
-  const Token = retrieveToken();
-  if(Token===null){
-    //go to sign in 
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="signup" component={MyStack}/>
-      </Tab.Navigator>
-    </NavigationContainer>
-  }
-  else{
-    return (
-      <NavigationContainer>
-        <Tab.Navigator>
-            <Tab.Screen name="Home">
-              {() => <HomeScreen token = {Token}/>}
-            </Tab.Screen>
-            <Tab.Screen name="Profile" component={Profile}/>
-            <Tab.Screen name="signup" component={MyStack}/>
-        </Tab.Navigator>
-      </NavigationContainer>
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [userToken, setUserToken] = React.useState(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+
+
+  if(isLoading){
+    return(
+      <View>
+        <ActivityIndicator size="large"/>
+      </View>
     );
+  }
+  render() {
+    return <SignedIn />;
   }
 };
 
@@ -79,4 +79,3 @@ const styles = StyleSheet.create({
   
 });
 
-export default App;
