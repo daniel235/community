@@ -10,11 +10,8 @@ import React, { useEffect } from 'react';
 import { AsyncStorage, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyStack from './components/navigate';
-import HomeScreen from './components/home';
-import Profile from './components/profile';
 
+import { AuthContext } from './components/context';
 
 import {
   SafeAreaView,
@@ -32,50 +29,61 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
 import SignIn from './components/signIn';
-import { SignedOut, SignedIn } from './components/router';
-
-
-const Tab = createBottomTabNavigator();
-
-retrieveToken = async () => {
-  try {
-    const value = await AsyncStorage.getItem('token');
-    if(value !== null){
-      console.log(value);
-    }
-  } catch (error){
-    console.log(error);
-  }
-  return value;
-}
+//import { SignedOut, SignedIn } from './components/router';
 
 const App = () => {
+  
   //check for auth token
   const [isLoading, setIsLoading] = React.useState(true);
   const [userToken, setUserToken] = React.useState(null);
+  /*
+  const initialLoginState = {
+    isLoading: true,
+    userName: null,
+    userToken: null
+  }*/
+
+  const authContext = React.useMemo(() => ({
+    signIn: () => {
+      setUserToken('rando');
+      setIsLoading(false);
+    },
+    signOut: () => {
+      setUserToken('rando');
+      setIsLoading(false);
+    },
+    signUp: () => {
+      setUserToken('rando');
+      setIsLoading(false);
+    },
+
+  }));
 
   useEffect(() => {
     setTimeout(() => {
-      setIsLoading(false);
+      let userToken;
+      try {
+        userToken = AsyncStorage.getItem('token');
+      } catch(e) {
+        console.log(e);
+      }
+
     }, 1000);
   }, []);
 
 
-
   if(isLoading){
     return(
-      <View>
-        <ActivityIndicator size="large"/>
-      </View>
+      <SignIn/>
     );
-  }
-  render() {
-    return <SignedIn />;
-  }
-};
-
-const styles = StyleSheet.create({
+  };
   
-});
+  return(
+    <SignIn/>
+  );
+  
+}
 
+export default App;

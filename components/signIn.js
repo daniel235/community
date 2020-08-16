@@ -22,19 +22,19 @@ function setPassword(text) {
 
 function goToHome(user, nav){
     nav.navigate('Home', {userId : user.userId});
-}
-
+};
+/*
 function goToProfile(user, nav) {
     console.log("user id");
     console.log(user.userId);
     nav.navigate('Profile', {userId: user.userId});
-}
+}*/
 
 
 function loginLogic(user, nav) {
     var userId = login(user, nav);
     return userId;
-}
+};
 
 
 async function login(users, nav){

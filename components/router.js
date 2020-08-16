@@ -4,7 +4,7 @@ import SignUp from "./signup";
 import SignIn from "./signIn";
 import Profile from "./profile";
 
-
+/*
 export const SignedOut = StackNavigator({
 	SignUp: {
 		screen: SignUp,
@@ -39,4 +39,4 @@ export const SignedIn = TabNavigator({
 			)
 		}
 	}
-});
+});*/
