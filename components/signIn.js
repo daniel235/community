@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
-
+import { AuthContext } from "./context";
 
 var user = {
     email: '',
@@ -69,6 +69,8 @@ async function login(users, nav){
 
 
 function SignIn({navigation}) {
+    const { signIns } = React.useContext(AuthContext);
+
     return (
         <View>
             <Text>Sign In</Text>
@@ -92,7 +94,7 @@ function SignIn({navigation}) {
             
             <TouchableOpacity
                 style={{alignItems: 'center'}}
-                onPress={() => navigation.navigate('SignUp')}
+                onPress={() => signIns()}
             >
                 <Text style={{color: '#1ba8e0'}}>Sign Up</Text>
             </TouchableOpacity>
