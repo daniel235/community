@@ -100,30 +100,8 @@ export default class NewsFeed extends React.Component {
     authenticate = () => {
         this.setState({SignedInApp : true});
     }
-    /*
-    signedIn(){
-        if(this.state.SignedInApp){
-            return(
-                <View>
-                    <this.StatusBar/>
-                    <this.getNewsFeed id={this.state.userId}/>
-                </View>
-            );
-        }
-        else{
-            return(
-                <View>
-                    <Text>Sign in</Text>
-                </View>
-            );
-        }
-    }*/
 
     render() {
-        /*
-        if(this.state.userId != null){
-            this.setState({SignedInApp : True});
-        }*/
         return(
             <View>
                 <this.StatusBar/>

@@ -31,12 +31,6 @@ function goToProfile(user, nav) {
 }*/
 
 
-function loginLogic(user, nav) {
-    var userId = login(user, nav);
-    return userId;
-};
-
-
 async function login(users, nav){
     var data;
 
@@ -94,7 +88,7 @@ function SignIn({navigation}) {
             
             <TouchableOpacity
                 style={{alignItems: 'center'}}
-                onPress={() => signIns()}
+                onPress={() => signIns(user.email, user.password)}
             >
                 <Text style={{color: '#1ba8e0'}}>Sign Up</Text>
             </TouchableOpacity>

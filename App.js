@@ -34,6 +34,8 @@ import {
 import SignIn from './components/signIn';
 import HomeScreen from './components/home';
 import Profile from './components/profile';
+
+import { signInApi, signUpApi } from './api_functions/api';
 //import { SignedOut, SignedIn } from './components/router';
 
 const Drawer = createDrawerNavigator();
@@ -85,37 +87,66 @@ const App = () => {
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
   const authContext = React.useMemo(() => ({
-    signIns: (userName, password) => {
-      //setUserToken('rando');
-      //setIsLoading(false);
+    signIns: async(userName, password) => {
+      let userToken, users;
+      userToken = null;
       //api call here
-      let userToken;
-      userName = null;
-      userToken = 'rando';
+      users = signInApi(userName, password);
+      userToken = users.userId;
+      try{
+        await AsyncStorage.setItem('userToken', userToken);
+        await AsyncStorage.setItem('userId', users.userId);
+      } catch(e) {
+        console.log(e);
+      }
       dispatch({type: 'LOGIN', id: userName, token: userToken});
     },
-    signOut: () => {
+    signOut: async() => {
+      try {
+        await AsyncStorage.removeItem('userToken');
+        await AsyncStorage.removeItem('userId');
+      } catch(e) {
+        console.log(e);
+      }
+      dispatch({type: 'LOGOUT'});
+    },
+    signUps: async(userName, password) => {
       //setUserToken('rando');
       //setIsLoading(false);
-      dispatch({type: 'LOGOUT'})
-    },
-    signUp: () => {
-      setUserToken('rando');
-      setIsLoading(false);
-    },
+      let userToken, user;
+      userToken = 'rando';
+      userId = '';
+      //api call
+      user = signUpApi(userName, password);
+      userToken = user.userId;
 
+      try {
+        await AsyncStorage.setItem('userToken', userToken);
+        await AsyncStorage.setItem('userId', userId);
+      } catch(e){
+        console.log(e);
+      }
+      dispatch({type: 'REGISTER', id : userName, token: userToken});
+    }
   }));
 
   useEffect(() => {
-    setTimeout(() => {
+    setTimeout(async() => {
       //setIsLoading(false);
       //grab from async storage
-      dispatch({type: 'RETRIEVE_TOKEN', token: 'rando'})
+      let userToken;
+      userToken = null;
+      try {
+        userToken = await AsyncStorage.getItem('userToken');
+      } catch(e){
+        console.log(e);
+      }
+      dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
     }, 1000);
   }, []);
 
 
-  if(LoginState.isLoading){
+  if(loginState.isLoading){
     return(
       <AuthContext.Provider value={authContext}>
         <SignIn/> 
@@ -126,7 +157,7 @@ const App = () => {
   return(
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        { LoginState.userToken != null ? (
+        { loginState.userToken != null ? (
           <Drawer.Navigator>
             <Drawer.Screen name="home" component={HomeScreen}/>
             <Drawer.Screen name="profile" component={Profile}/>
