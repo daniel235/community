@@ -83,7 +83,7 @@ function SignIn({navigation}) {
                 defaultValue={passwordText}/>
             <Button
                 title="Submit"
-                onPress={() => login(user, navigation)}
+                onPress={() => signIns(user.email, user.password)}
             />
             
             <TouchableOpacity

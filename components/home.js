@@ -1,8 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import {View, Text, FlatList, StyleSheet, TextInput, Button, TouchableOpacity, AsyncStorage } from 'react-native';
 import NewsFeed from './newsfeed';
 import { State } from 'react-native-gesture-handler';
+import { AuthContext } from './context';
 
+
+
+/*
 export default class HomeScreen extends React.Component {
     constructor(props){
         super(props);
@@ -18,18 +22,45 @@ export default class HomeScreen extends React.Component {
             }
         }
     }
-    
 
+    async getId() {
+        let ids;
+        let id = await AsyncStorage.getItem('userId');
+        ids = Object.keys(id);
+        return ids;
+    }
     render() {
-        id = this.state.userId;
+        let id = this.getId();
         console.log("myid " + id);
         return (
             <View style={{flex: 1}}>
                 <Text style={styles.logoLetters}>community</Text>
                 <NewsFeed userId={id}/>
+                <Button 
+                    title="Sign Out"
+                    onPress={() => signOutApp()}
+                />
+                    
             </View>
         );
     }
+}
+*/
+
+
+export default function HomeScreen() {
+    const { signOut } = React.useContext(AuthContext);
+    
+    return(
+        <View style={{flex: 1}}>
+            <Text style={styles.logoLetters}>community</Text>
+            <NewsFeed userId="123"/>
+            <Button 
+                title="Sign Out"
+                onPress={() => signOut()}
+            />
+        </View>
+    )
 }
 
 

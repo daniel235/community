@@ -88,18 +88,22 @@ const App = () => {
 
   const authContext = React.useMemo(() => ({
     signIns: async(userName, password) => {
+      console.log("sign in press");
       let userToken, users;
       userToken = null;
       //api call here
-      users = signInApi(userName, password);
+      users = await signInApi(userName, password);
       userToken = users.userId;
+      console.log("befor ", userToken);
       try{
         await AsyncStorage.setItem('userToken', userToken);
-        await AsyncStorage.setItem('userId', users.userId);
+        await AsyncStorage.setItem('userId', userToken);
       } catch(e) {
         console.log(e);
       }
+      console.log("user token ", userToken);
       dispatch({type: 'LOGIN', id: userName, token: userToken});
+      console.log("loginstate ", loginState.userToken);
     },
     signOut: async() => {
       try {
@@ -111,8 +115,6 @@ const App = () => {
       dispatch({type: 'LOGOUT'});
     },
     signUps: async(userName, password) => {
-      //setUserToken('rando');
-      //setIsLoading(false);
       let userToken, user;
       userToken = 'rando';
       userId = '';
@@ -132,7 +134,6 @@ const App = () => {
 
   useEffect(() => {
     setTimeout(async() => {
-      //setIsLoading(false);
       //grab from async storage
       let userToken;
       userToken = null;
@@ -141,10 +142,10 @@ const App = () => {
       } catch(e){
         console.log(e);
       }
+      console.log("current user token ", userToken);
       dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
     }, 1000);
   }, []);
-
 
   if(loginState.isLoading){
     return(
@@ -153,21 +154,19 @@ const App = () => {
       </AuthContext.Provider>
     );
   };
-  
   return(
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         { loginState.userToken != null ? (
-          <Drawer.Navigator>
-            <Drawer.Screen name="home" component={HomeScreen}/>
-            <Drawer.Screen name="profile" component={Profile}/>
-          </Drawer.Navigator>
+          <HomeScreen/>
         ) : (
           <SignIn/>
         )}
       </NavigationContainer>
     </AuthContext.Provider>
   );
+  
+  
   
 }
 

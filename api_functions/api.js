@@ -1,5 +1,6 @@
 	
 export async function signInApi(userName, password){
+    console.log("sign in api");
 	let users;
 	users = {
         email : userName,
@@ -15,7 +16,8 @@ export async function signInApi(userName, password){
     	body: JSON.stringify(users),
     });
     response = await response.json();
-	users.userId = await response._id;
+    users.userId = await response._id;
+    console.log(users.userId);
 	return users;
 }
 
@@ -33,7 +35,8 @@ export async function signUpApi(userName, password){
         },
         body: JSON.stringify(users)
     }).then((response) => {users.userId = response._id}).catch((error) => console.error(error));
-    console.log(users.userId);
+    
+    console.log("signed up " + users.userId);
 
 	return users;
 }
