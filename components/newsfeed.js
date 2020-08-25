@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './signup';
 import SignIn from './signIn';
 import { List } from 'native-base';
-
+import Post from './post';
 
 var text = "";
 var status = "";
@@ -26,6 +26,7 @@ async function getNewsFeed() {
     var newsData = {};
     //make get requst
     newsUrl = "https://intense-meadow-20924.herokuapp.com/newsFeed?id=" + parsedId;
+    localUrl = "localhost:3000/newsfeed?id=" + parsedId;
     console.log(newsUrl);
     newsData = await fetch(newsUrl, {
         method: 'GET',
@@ -47,38 +48,31 @@ async function getNewsFeed() {
     
 };
 
-async function unnecessaryFinalFunction(){
-    let data = await getNewsFeed();
-    data = JSON.stringify(data);
-    console.log("data" + data);
-    return data;
-}
 
 export default class NewsFeed extends React.Component {
     constructor(props){
         super(props);
-        state = {
+        this.state = {
             count : 0,
             userId : props.userId,
+            isLoading: true,
             SignedInApp : false,
             status : "",
             data : null,
-        };
-    };
+        }
+        this.displayNewsFeed = this.displayNewsFeed.bind(this);
+    }
 
     componentDidMount() {
         getNewsFeed().then(data => {
             this.setState({
                 data: data,
+                isLoading: false,
             });
-        }, error => {
-            Alert.alert('Error', 'Something went wrong');
-        })
+            console.log("data ", this.state.data);
+        }).catch((error) => console.log(error));
     }
 
-    createStatus(text) {
-        this.setState({status : text});
-    };
 
     StatusBar({navigation}){
         return(
@@ -97,13 +91,6 @@ export default class NewsFeed extends React.Component {
         );
     };
 
-    newsfeed = [];
-
-    post = {
-        name : "",
-        body : "",
-        date : Date.now()
-    };
 
     createPost(post){
         //post to newsfeed and send back entire newsfeed 
@@ -117,18 +104,6 @@ export default class NewsFeed extends React.Component {
         }).then((response) => console.log(response));
     };
     
-    createNewsFeed(data){
-        //iterate over json object
-        for(key in data){
-            if(posts.hasOwnProperty(key)){
-                this.post.name = key.name;
-                this.post.body = key.body;
-                this.post.date = Date.now();
-                this.newsfeed.push(this.post);
-            }
-        }
-    };
-
 
     displayNewsFeed(){
         let view = this.state.isLoading ? (
@@ -137,22 +112,30 @@ export default class NewsFeed extends React.Component {
                 <Text style={{marginTop: 10}}>Please Wait</Text>
             </View>
         ) : (
-            <List
-                dataArray={this.state.data}
-                renderRow={(item) => {
-                    return(
-                        <Post data={item}/>
-                    )
-                }}/>
-        )
+            <View>
+                <Text>My News</Text>
+                <List
+                    dataArray={this.state.data}
+                    renderRow={(item) => {
+                        return(
+                            <Post data={item}/>
+                        )
+                    }}/>
+                <Post data={this.state.data}/>
+            </View>
+        );
+        return view;
     };
-    
     
     render() {
         return(
             <View>
                 <this.StatusBar/>
-                <this.displayNewsFeed/>
+                {this.state.isLoading ? (
+                    <Text>Loading</Text>
+                ) : (
+                    <this.displayNewsFeed/>
+                )}
             </View>
         );
     }

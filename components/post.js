@@ -9,10 +9,15 @@ class Post extends Component {
 
 	render() {
 		return(
+			
 			<ListItem thumbnail>
 				<Left>
-					
+
 				</Left>
+				<Body>
+					<Text numberOfLines={3}>{this.data.name} {this.data.date}</Text>
+					<Text numberOfLines={3}>{this.data.body}</Text>
+				</Body>
 			</ListItem>
 		);
 	}

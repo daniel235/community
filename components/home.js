@@ -54,8 +54,9 @@ export default function HomeScreen() {
     return(
         <View style={{flex: 1}}>
             <Text style={styles.logoLetters}>community</Text>
-            <NewsFeed userId="123"/>
+            <NewsFeed style={{marginBottom : 40}} userId="123"/>
             <Button 
+                style={styles.signOutButton}
                 title="Sign Out"
                 onPress={() => signOut()}
             />
@@ -70,5 +71,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 40,
         backgroundColor: '#1ba8e0',
+    },
+    signOutButton : {
+        marginTop : 300,
     }
 })
