@@ -23,8 +23,6 @@ function setPassword(text) {
 
 
 function saveUser(users) {
-    console.log(users.email);
-    console.log(users.password);
     //create post request
     fetch('https://intense-meadow-20924.herokuapp.com/account', {
         method: 'POST',

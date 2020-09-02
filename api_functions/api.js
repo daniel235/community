@@ -42,7 +42,6 @@ export async function signUpApi(userName, password){
 }
 
 export async function postNewsFeed(post){
-    console.log("passed in post ", post);
     fetch('https://intense-meadow-20924.herokuapp.com/newsFeed', {
         method: 'POST',
         headers: {
@@ -51,5 +50,4 @@ export async function postNewsFeed(post){
         },
         body: JSON.stringify(post)
     }).catch((error) => console.log(error));
-    console.log("sent to news database" + post);
 }

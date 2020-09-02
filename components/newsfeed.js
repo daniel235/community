@@ -28,7 +28,7 @@ async function getNewsFeed() {
     //make get requst
     newsUrl = "https://intense-meadow-20924.herokuapp.com/newsFeed?id=" + parsedId;
     localUrl = "localhost:3000/newsfeed?id=" + parsedId;
-    console.log(newsUrl);
+    
     newsData = await fetch(newsUrl, {
         method: 'GET',
         headers: {
@@ -37,14 +37,12 @@ async function getNewsFeed() {
         },
     }).then((response) => response.json())
     .then((json) => {
-        console.log(json);
         return json;
     })
     .catch((error) => {
         console.error(error);
     });
 
-    console.log("response ", newsData);
     return newsData;
     
 };
@@ -80,7 +78,6 @@ export default class NewsFeed extends React.Component {
                 data: data,
                 isLoading: false,
             });
-            console.log("data ", this.state.data);
         }).catch((error) => console.log(error));
     }
 

@@ -77,4 +77,4 @@ class Profiles extends React.Component {
 }
 
 
-export default Profile;
+export default Profiles;

@@ -34,7 +34,8 @@ import {
 
 import SignIn from './components/signIn';
 import HomeScreen from './components/home';
-import Profile from './components/profile';
+import Profiles from './components/profile';
+import settings from './components/settings';
 import MyStack from './components/navigate';
 
 import { signInApi, signUpApi } from './api_functions/api';
@@ -161,7 +162,8 @@ const App = () => {
         { loginState.userToken != null ? (
           <Tab.Navigator>
             <Tab.Screen name="Home" component={HomeScreen}/>
-            <Tab.Screen name="Profile" component={Profile}/>
+            <Tab.Screen name="Profile" component={Profiles}/>
+            <Tab.Screen name="Settings" component={settings}/>
           </Tab.Navigator>
         ) : (
           <SignIn/>
