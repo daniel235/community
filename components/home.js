@@ -53,6 +53,7 @@ export default function HomeScreen() {
     
     return(
         <View style={{flex: 1}}>
+            
             <Text style={styles.logoLetters}>community</Text>
             <NewsFeed style={{marginBottom : 40}} userId="123"/>
             <Button 

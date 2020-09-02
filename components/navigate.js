@@ -16,7 +16,6 @@ function MyStack() {
         <Stack.Navigator>
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="NewsFeed" component={NewsFeed} />
             <Stack.Screen name="update" component={updateProfile} />
         </Stack.Navigator>
     );

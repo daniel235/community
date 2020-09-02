@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {View, Text, TextInput, Button, AsyncStorage, Alert, ActivityIndicator} from 'react-native';
+import {View, Text, TextInput, Button, AsyncStorage, Alert, ActivityIndicator, FlatList, SafeAreaView} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './signup';
 import SignIn from './signIn';
 import { List } from 'native-base';
 import Post from './post';
+import { postNewsFeed } from '../api_functions/api';
 
 var text = "";
 var status = "";
@@ -48,6 +49,16 @@ async function getNewsFeed() {
     
 };
 
+async function createPost(post){
+    //set post
+    post.name = await AsyncStorage.getItem('userName');
+    post.date = Date.now();
+    post.user_id = await AsyncStorage.getItem('userId');
+    //post to newsfeed and send back entire newsfeed 
+    postNewsFeed(post);
+    return post;
+}
+
 
 export default class NewsFeed extends React.Component {
     constructor(props){
@@ -75,35 +86,38 @@ export default class NewsFeed extends React.Component {
 
 
     StatusBar({navigation}){
+        var obs = {
+            "user_id" : null,
+            "name" : null,
+            "body" : null,
+            "date" : null,
+        };
         return(
-            <View>
-                <Text>Insert Status</Text>
+            <View style={{flexDirection: 'row'}}>
                 <TextInput
-                    style={{height: 40}}
+                    style={{height: 40, width: '50%'}}
                     placeholder="What's Up?"
-                    onChangeText={text => console.log(text)}
+                    onChangeText={text => {obs.body = text}}
                     defaultValue={text}/>
-                <Button
-                    title="Post"
-                    onPress={() => this.createPost()}
-                />
+                
+                <TouchableOpacity
+                    style={{backgroundColor: '#02aede', marginTop: '20%', width: '100%', position: 'relative'}}
+                    
+                >
+                    <Button 
+                        onPress={() => {
+                            createPost(obs);
+                        }}
+                        title="Post"
+                    />
+                </TouchableOpacity>
             </View>
         );
     };
-
-
-    createPost(post){
-        //post to newsfeed and send back entire newsfeed 
-        fetch('https://intense-meadow-20924.herokuapp.com/newsFeed', {
-            method: 'POST', 
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: post,
-        }).then((response) => console.log(response));
-    };
     
+    renderItem = ({item}) => {
+        return <Post data={item}/>
+    };
 
     displayNewsFeed(){
         let view = this.state.isLoading ? (
@@ -112,17 +126,14 @@ export default class NewsFeed extends React.Component {
                 <Text style={{marginTop: 10}}>Please Wait</Text>
             </View>
         ) : (
-            <View>
+            <SafeAreaView>
                 <Text>My News</Text>
-                <List
-                    dataArray={this.state.data}
-                    renderRow={(item) => {
-                        return(
-                            <Post data={item}/>
-                        )
-                    }}/>
-                <Post data={this.state.data}/>
-            </View>
+                <FlatList
+                    //dataArray={this.state.data}
+                    data={this.state.data}
+                    renderItem={this.renderItem}
+                />
+            </SafeAreaView>
         );
         return view;
     };

@@ -10,6 +10,7 @@ import React, { useEffect } from 'react';
 import { AsyncStorage, ActivityIndicator } from 'react-native';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { AuthContext } from './components/context';
@@ -34,11 +35,13 @@ import {
 import SignIn from './components/signIn';
 import HomeScreen from './components/home';
 import Profile from './components/profile';
+import MyStack from './components/navigate';
 
 import { signInApi, signUpApi } from './api_functions/api';
 //import { SignedOut, SignedIn } from './components/router';
 
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 const App = () => {
   
@@ -88,7 +91,6 @@ const App = () => {
 
   const authContext = React.useMemo(() => ({
     signIns: async(userName, password) => {
-      console.log("sign in press");
       let userToken, users;
       userToken = null;
       //api call here
@@ -98,12 +100,11 @@ const App = () => {
       try{
         await AsyncStorage.setItem('userToken', userToken);
         await AsyncStorage.setItem('userId', userToken);
+        await AsyncStorage.setItem('userName', users.email);
       } catch(e) {
         console.log(e);
       }
-      console.log("user token ", userToken);
       dispatch({type: 'LOGIN', id: userName, token: userToken});
-      console.log("loginstate ", loginState.userToken);
     },
     signOut: async() => {
       try {
@@ -142,7 +143,6 @@ const App = () => {
       } catch(e){
         console.log(e);
       }
-      console.log("current user token ", userToken);
       dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
     }, 1000);
   }, []);
@@ -153,20 +153,22 @@ const App = () => {
         <SignIn/> 
       </AuthContext.Provider>
     );
-  };
+  }
+
   return(
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         { loginState.userToken != null ? (
-          <HomeScreen/>
+          <Tab.Navigator>
+            <Tab.Screen name="Home" component={HomeScreen}/>
+            <Tab.Screen name="Profile" component={Profile}/>
+          </Tab.Navigator>
         ) : (
           <SignIn/>
         )}
       </NavigationContainer>
     </AuthContext.Provider>
   );
-  
-  
   
 }
 

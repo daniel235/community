@@ -1,14 +1,15 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, AsyncStorage} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 id = null;
 
-function getProfileData(id) {
+async function getProfileData() {
     var profileData = {};
     var idOb = {
-        uid: id,
+        uid: await AsyncStorage.getItem("userId"),
     };
+
     fetch('https://intense-meadow-20924.herokuapp.com/profileData', {
         method: 'POST',
         headers: {
@@ -16,7 +17,7 @@ function getProfileData(id) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(idOb)
-    }).then((response) => profileData = response.json());
+    }).then((response) => {profileData = response.json()});
     //check if response is empty
     return profileData;
 
@@ -25,49 +26,25 @@ function getProfileData(id) {
 //navigate to profile with a user id to show that your logged in
 function Profile({route, navigation}) {
     var me = new Profiles();
-    console.log("at profile again");
-    //const { userId } = route.params;
-    //id = userId;
     var profileData = null;
-    if(route.params != null) {
-        profileData = getProfileData(route.params.userId);
-        console.log("profile data");
-        console.log(profileData);
-        if (JSON.stringify(profileData) === '{}') {
-            console.log("navigating to update");
-            navigation.navigate('update', {id : route.params.userId});
-        }
-        //populate profile data
-        else{
-            console.log("does have profile data");
-            console.log(profileData);
-            me.state.name = profileData.Name;
-            me.state.sex = profileData.Sex;
-            me.state.userId = route.paramse.userId;
-        }
-        return (
-            <View style={{flex: 1}}>
-                <Text style={{alignItems: 'center'}}>Profile Screen</Text>
-                <Text>Hello {me.state.name}</Text>
-            </View>
-        );
-        /*
-        <Text>{route.params.userId}</Text>
-                <Text>{me.state.name}</Text>
-                <Text>Info</Text>
-                <Text>Age: {me.state.age}</Text>*/
+    profileData = getProfileData(route.params.userId);
+    console.log(profileData);
+    if (JSON.stringify(profileData) === '{}') {
+        console.log("navigating to update");
+        navigation.navigate('update', {id : route.params.userId});
     }
+    //populate profile data
     else{
-        return(
-            <View>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('SignIn')}
-                >
-                    <Text>Go to Sign In</Text>
-                </TouchableOpacity>
-            </View>
-        );
+        me.state.name = profileData.Name;
+        me.state.sex = profileData.Sex;
+        me.state.userId = route.paramse.userId;
     }
+    return (
+        <View style={{flex: 1}}>
+            <Text style={{alignItems: 'center'}}>Profile Screen</Text>
+            <Text>Hello {me.state.name}</Text>
+        </View>
+    );
 }
 
 
@@ -81,6 +58,14 @@ class Profiles extends React.Component {
             sex : "M"
         }
     } 
+    componentDidMount(){
+        getProfileData().then(data => {
+            this.setState({
+                userId : data.user_id
+            });
+        }).catch((error) => console.log(error));
+    }
+
     render() {
         return (
             <View>
