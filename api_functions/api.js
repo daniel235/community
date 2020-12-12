@@ -17,7 +17,7 @@ export async function signInApi(userName, password){
     });
     response = await response.json();
     users.userId = await response._id;
-    console.log(users.userId);
+    console.log("id returned ", users.userId);
 	return users;
 }
 
@@ -50,4 +50,17 @@ export async function postNewsFeed(post){
         },
         body: JSON.stringify(post)
     }).catch((error) => console.log(error));
+}
+
+export async function getMyFriends(id){
+    console.log("get friends");
+    let friendsUrl = 'https://intense-meadow-20924.herokuapp.com/account/friends?id=' + id;
+    fetch(friendsUrl, {
+        method: 'GET',
+        headers: {
+            "Accept" : "application/json",
+            "Content-Type": "application/json"
+        }, 
+        
+    })
 }

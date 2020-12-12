@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {View, Text, Button} from 'react-native';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
+import ImagePicker from 'react-native-image-picker';
 
 function uploadData(dataObject, nav){
     fetch('https://intense-meadow-20924.herokuapp.com/updateProfile', {
@@ -15,6 +16,19 @@ function uploadData(dataObject, nav){
         //navigate to profile
         nav.navigate('Profile', {"id" : dataObject.userId});
 };
+
+//save to profile pictures
+function handleChoosePhoto() {
+    photo = null;
+    const options = {
+        noData: true,
+    };
+    ImagePicker.launchImageLibrary(options, (response) => {
+        if(response.uri){
+            
+        }
+    })
+}
 
 var dataOb = {
     "userId" : 0,
@@ -87,6 +101,7 @@ function updateProfile({route, navigation}){
                 title="Submit"
                 onPress={() => uploadData(dataOb, navigation)}
             />
+            <Button title="Choose Photo" onPress={handleChoosePhoto}/>
         </View>
     );
 }

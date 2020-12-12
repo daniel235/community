@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {View, Text, AsyncStorage} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import NavBar from './navbar';
 
 id = null;
 
@@ -10,15 +11,23 @@ async function getProfileData() {
         uid: await AsyncStorage.getItem("userId"),
     };
 
-    fetch('https://intense-meadow-20924.herokuapp.com/profileData', {
+    let response = await fetch('https://intense-meadow-20924.herokuapp.com/profileData', {
         method: 'POST',
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         body: JSON.stringify(idOb)
-    }).then((response) => {profileData = response.json()});
+    });
+
     //check if response is empty
+    if(!response.ok){
+        console.log("bad response");
+    }
+    else{
+        response = await response.json();
+        profileData = response;
+    }
     return profileData;
 
 }
@@ -61,16 +70,23 @@ class Profiles extends React.Component {
     componentDidMount(){
         getProfileData().then(data => {
             this.setState({
-                userId : data.user_id
+                userId : data.userId,
+                name : data.FirstName,
+                age : data.age, 
+                sex : data.sex,
             });
+            console.log(this.state.userId);
         }).catch((error) => console.log(error));
     }
 
     render() {
         return (
             <View>
+                <NavBar/>
                 <Text>User id </Text>
                 <Text>{this.state.userId}</Text>
+                <Text>{this.state.name}</Text>
+                <Text>{this.state.age}</Text>
             </View>
         );
     }

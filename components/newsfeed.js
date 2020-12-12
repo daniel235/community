@@ -81,7 +81,6 @@ export default class NewsFeed extends React.Component {
         }).catch((error) => console.log(error));
     }
 
-
     StatusBar({navigation}){
         var obs = {
             "user_id" : null,

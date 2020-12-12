@@ -63,7 +63,7 @@ async function login(users, nav){
 
 
 function SignIn({navigation}) {
-    const { signIns } = React.useContext(AuthContext);
+    const { signIns, signUps } = React.useContext(AuthContext);
 
     return (
         <View>
@@ -88,7 +88,7 @@ function SignIn({navigation}) {
             
             <TouchableOpacity
                 style={{alignItems: 'center'}}
-                onPress={() => signIns(user.email, user.password)}
+                onPress={() => navigation.navigate("signup")}
             >
                 <Text style={{color: '#1ba8e0'}}>Sign Up</Text>
             </TouchableOpacity>

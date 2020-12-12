@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, Image, View } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 
 
 class Post extends Component {
@@ -10,13 +10,27 @@ class Post extends Component {
 
 	render() {
 		return(
-			<View>
-				<Text>{this.data.name} {this.data.date}</Text>
-				<Text numberOfLines={4}>{this.data.body}</Text>
+			<View style={styles.post}>
+				<Text style={styles.postHeader}>{this.data.name} {this.data.date}</Text>
+				<Text numberOfLines={4} style={styles.postBody}>{this.data.body}</Text>
 			</View>
 		);
 	}
 
 }
+
+const styles = StyleSheet.create({
+	post : {
+		marginLeft: 10,
+	},
+	postHeader : {
+		marginTop: 25,
+		color: '#004d80'
+	},
+	postBody : {
+		marginBottom: 20,
+		fontSize: 20,
+	}
+});
 
 export default Post;
